@@ -1,0 +1,22 @@
+    lex x : 100;
+    lex a : 5;
+    lex z : "ESTA ES UNA VARIABLE GLOBAL";
+    lex y : "ESTA NO SIRVE";
+
+    log("TEXTO VACIO");
+
+    fun => a (param1, param2) <
+        lex ya : "ESTA ES UNA VARIABLE LOCAL";
+
+        log(x);
+        log(y);
+
+        log(ya);
+        log(param1);
+        log(param2);
+        return 25;
+    >
+
+    a(5, "ESTE ES UNA PARAMETRO");
+
+    see_console();
