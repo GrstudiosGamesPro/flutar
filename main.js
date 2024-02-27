@@ -13,7 +13,7 @@ function read_file(ruta) {
     }
 }
 
-const code = read_file("script.flut");
+const code = read_file("script.flutar");
 
 const tokensFound = lexer(code);
 const parsedStatements = parser(tokensFound);

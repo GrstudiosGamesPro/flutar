@@ -31,12 +31,20 @@ function execute(statements, environment = {}) {
                 for (let i = 0; i < statement.parameters.length; i++) {
                     newEnvironment[statement.parameters[i]] = args[i];
                 }
+
+                for (let data of statement.functionBody) {
+                    if (data.type === 'returnStatement') {
+                        newEnvironment["_returnValue"] = data.value;
+                    }
+                }
+
                 execute(statement.functionBody, newEnvironment);
             };
         } else if (statement.type === 'functionCall') {
             if (environment[statement.functionName]) {
                 const func = environment[statement.functionName];
                 const args = statement.args.map(arg => evaluateExpression(arg));
+
                 func(...args);
             } else {
                 throw new Error(`Function "${statement.functionName}" is not defined.`);

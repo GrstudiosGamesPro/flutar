@@ -13,11 +13,11 @@ function parse(tokens) {
         if (tokens[current].type === 'STRING' || tokens[current].type === 'NUMBER') {
             const value = tokens[current].value;
             current++;
-            return value; // Aquí devolvemos directamente el valor
+            return value;
         } else if (tokens[current].type === 'IDENTIFIER') {
             const identifier = tokens[current].value;
             current++;
-            return identifier; // Aquí devolvemos directamente el identificador
+            return identifier;
         } else {
             throw new Error(`Unexpected token in expression: ${tokens[current].type}`);
         }
@@ -29,10 +29,27 @@ function parse(tokens) {
             const identifier = tokens[current].value;
             consume('IDENTIFIER');
             consume('EQUALS');
-            const value = expression();
-            console.log("Valor del identificador: " + value);
-            consume('SEMICOLON');
-            return { type: 'variableDeclaration', identifier, value };
+            let value = expression();
+
+            if (tokens[current].type !== 'LPAREN') {
+                consume('SEMICOLON');
+                return { type: 'variableDeclaration', identifier, value };
+            } else {
+                consume('LPAREN');
+                const args = [];
+                while (tokens[current].type !== 'RPAREN') {
+                    args.push(expression());
+
+                    if (tokens[current].type === 'COMMA') {
+                        consume('COMMA');
+                    }
+                }
+                consume('RPAREN');
+                consume('SEMICOLON');
+
+                return { type: 'functionCall', functionName: value, args };
+            }
+
         } else if (tokens[current].type === 'PRINT') {
             consume('PRINT');
             consume('LPAREN');
@@ -67,56 +84,49 @@ function parse(tokens) {
             }
             consume('RPAREN');
             consume('LBRACE');
+
             const functionBody = [];
             while (tokens[current].type !== 'RBRACE') {
                 functionBody.push(statement());
             }
+
             consume('RBRACE');
-
-            let hasReturn = false;
-
-            for (const statement of functionBody) {
-                if (statement.type === 'returnStatement') {
-                    console.log("RETURN FOUND IN THIS FUNCTION => " + statement.value);
-                    functionBody.push({ type: 'returnStatement', value: statement.value });
-                    hasReturn = true;
-                    break;
-                }
-            }
-
-
-            // if (!hasReturn) {
-            //     functionBody.push({ type: 'returnStatement', value: undefined });
-            // }
 
             return { type: 'functionDeclaration', functionName, parameters, functionBody };
         }
         else if (tokens[current].type === 'IDENTIFIER') {
-            const identifier = tokens[current].value;
-            consume('IDENTIFIER');
+            const identifier = expression();
             if (tokens[current].type === 'LPAREN') {
                 consume('LPAREN');
                 const args = [];
                 while (tokens[current].type !== 'RPAREN') {
                     args.push(expression());
+
                     if (tokens[current].type === 'COMMA') {
                         consume('COMMA');
                     }
                 }
                 consume('RPAREN');
                 consume('SEMICOLON');
+
                 return { type: 'functionCall', functionName: identifier, args };
+            } else if (tokens[current].type === 'EQUALS') {
+                consume('EQUALS');
+                const value = expression();
+                consume('SEMICOLON');
+
+                return { type: 'variableAssignment', variableName: identifier, value };
             } else {
                 throw new Error(`Unexpected token after identifier: ${tokens[current].type}`);
             }
         } else {
             throw new Error(`Unexpected token in statement: ${tokens[current].type}`);
         }
+
     }
 
     const statements = [];
     while (current < tokens.length) {
-        console.log("Current token:", tokens[current]);
         statements.push(statement());
     }
 
