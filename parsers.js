@@ -10,7 +10,7 @@ function parse(tokens) {
     }
 
     function expression() {
-        if (tokens[current].type === 'STRING' || tokens[current].type === 'NUMBER') {
+        if (tokens[current].type === 'STRING') {
             const value = tokens[current].value;
             current++;
             return value;
@@ -18,10 +18,47 @@ function parse(tokens) {
             const identifier = tokens[current].value;
             current++;
             return identifier;
+        } else if (tokens[current].type === 'NUMBER') {
+            const value = tokens[current].value;
+            current++;
+            return parseFloat(value);
+        } else if (tokens[current].type === 'LPAREN') {
+            consume('LPAREN');
+            const result = evaluate();
+            consume('RPAREN');
+            return result;
         } else {
             throw new Error(`Unexpected token in expression: ${tokens[current].type}`);
         }
     }
+
+
+    function evaluate() {
+        let left_value = expression();
+        console.log("LEFT EXPRESSION: " + left_value);
+        current++;
+        let right_value = expression();
+        console.log("RIGHT EXPRESSION: " + right_value);
+        current++;
+    }
+
+    // function expression() {
+    //     if (tokens[current].type === 'STRING') {
+    //         const value = tokens[current].value;
+    //         current++;
+    //         return value;
+    //     } else if (tokens[current].type === 'NUMBER') {
+    //         const value = tokens[current].value;
+    //         current++;
+    //         return value;
+    //     } else if (tokens[current].type === 'IDENTIFIER') {
+    //         const identifier = tokens[current].value;
+    //         current++;
+    //         return identifier;
+    //     } else {
+    //         throw new Error(`Unexpected token in expression: ${tokens[current].type}`);
+    //     }
+    // }
 
     function statement() {
         if (tokens[current].type === 'VAR') {
@@ -34,22 +71,23 @@ function parse(tokens) {
             if (tokens[current].type !== 'LPAREN') {
                 consume('SEMICOLON');
                 return { type: 'variableDeclaration', identifier, value };
-            } else {
+            } else if (tokens[current].type === 'LPAREN') {
                 consume('LPAREN');
                 const args = [];
                 while (tokens[current].type !== 'RPAREN') {
-                    args.push(expression());
+                    const result = expression();
+                    args.push(result);
 
                     if (tokens[current].type === 'COMMA') {
                         consume('COMMA');
                     }
                 }
+
+
                 consume('RPAREN');
                 consume('SEMICOLON');
-
-                return { type: 'functionCall', functionName: value, args };
+                return { type: 'functionCallVariable', functionName: value, args, identifier };
             }
-
         } else if (tokens[current].type === 'PRINT') {
             consume('PRINT');
             consume('LPAREN');

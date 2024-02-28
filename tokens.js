@@ -1,5 +1,5 @@
 const tokens = [
-    { name: 'NUMBER', regex: /\d+/ },
+    { name: 'NUMBER', regex: /\d+(\.\d+)?|\.\d+/ },
     { name: 'STRING', regex: /"(.*?)"/ },
     { name: 'VAR', regex: /lex/ },
     { name: 'PRINT', regex: /log/ },

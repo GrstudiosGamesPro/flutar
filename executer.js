@@ -1,7 +1,10 @@
+const { json } = require("stream/consumers");
+
 function execute(statements, environment = {}) {
+
     function evaluateExpression(expr) {
         if (!isNaN(expr)) {
-            return parseInt(expr);
+            return expr;
         } else if (expr.startsWith('"') && expr.endsWith('"')) {
             return expr.slice(1, -1);
         } else {
@@ -9,7 +12,6 @@ function execute(statements, environment = {}) {
         }
     }
 
-    // Agregar las variables externas al entorno de la función
     for (const variable in environment) {
         if (environment.hasOwnProperty(variable)) {
             environment[variable] = environment[variable];
@@ -21,20 +23,34 @@ function execute(statements, environment = {}) {
 
         if (statement.type === 'variableDeclaration') {
             environment[statement.identifier] = evaluateExpression(statement.value);
-        } else if (statement.type === 'printStatement') {
+        } else if (statement.type === 'functionCallVariable') {
+            if (environment[statement.functionName]) {
+                const func = environment[statement.functionName];
+                const args = statement.args.map(arg => evaluateExpression(arg));
+
+                func(...args);
+
+                if (environment['_returnValue'] !== undefined) {
+                    environment[statement.identifier] = evaluateExpression(environment['_returnValue']);
+                }
+            } else {
+                throw new Error(`Function "${statement.functionName}" is not defined.`);
+            }
+        }
+        else if (statement.type === 'printStatement') {
             console.log(evaluateExpression(statement.value));
         } else if (statement.type === 'seeConsoleStatement') {
             console.log("Hello from console!");
         } else if (statement.type === 'functionDeclaration') {
             environment[statement.functionName] = (...args) => {
-                const newEnvironment = { ...environment }; // Copia del entorno actual
+                const newEnvironment = { ...environment };
                 for (let i = 0; i < statement.parameters.length; i++) {
                     newEnvironment[statement.parameters[i]] = args[i];
                 }
 
                 for (let data of statement.functionBody) {
                     if (data.type === 'returnStatement') {
-                        newEnvironment["_returnValue"] = data.value;
+                        environment['_returnValue'] = data.value;
                     }
                 }
 
@@ -49,8 +65,6 @@ function execute(statements, environment = {}) {
             } else {
                 throw new Error(`Function "${statement.functionName}" is not defined.`);
             }
-        } else if (statement.type === 'returnStatement') {
-            return evaluateExpression(statement.value); // Evalúa la expresión y devuelve su valor
         }
     }
 }

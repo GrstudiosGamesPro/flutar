@@ -1,17 +1,15 @@
-    lex x : 100;
-    log (x);
-
-    fun => a (parm1) <
-        log(parm1);
-        return 5324435;
+    fun => b (a, b) <
+        return 123456789;
     >
 
+    fun => c (b, g)<
+        log("HI!");
+        return "HOLA SOY MCLOVIN";
+    >
 
-    lex xyz : a("EJECUTANDO DESDE LA VARIABLE");
+    lex g : c(5, 2);
 
-    
-    log (gg);
+    log(g);
 
-    see_console();
-
-    
+    lex hola : "HOLA PA";
+    log(hola);
