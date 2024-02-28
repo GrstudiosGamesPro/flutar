@@ -13,8 +13,12 @@ function read_file(ruta) {
     }
 }
 
-const code = read_file("script.flutar");
+function start_flutar() {
+    const code = read_file("script.flutar");
 
-const tokensFound = lexer(code);
-const parsedStatements = parser(tokensFound);
-executor(parsedStatements);
+    const tokensFound = lexer(code);
+    const parsedStatements = parser(tokensFound);
+    executor(parsedStatements);
+}
+
+module.exports = start_flutar;

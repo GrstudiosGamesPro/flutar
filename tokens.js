@@ -1,6 +1,21 @@
 const tokens = [
+    // Operadores booleanos
+    { name: 'OPERATOR', regex: /(&&|\|\||!|<=|>=|=|<|>)/ },
+
+    // Palabras clave booleanas
+    { name: 'TRUE', regex: /true/ },
+    { name: 'FALSE', regex: /false/ },
+
+    //CONDICIONALES
+    { name: 'IF', regex: /if/ },
+    { name: 'ELSE', regex: /else/ },
+
     //LOOPS
     { name: 'FOR', regex: /for/ },
+
+    //FLUTAR DEBUG
+    { name: 'HIFLUTAR', regex: /hi_flutar/ },
+
 
     { name: 'NUMBER', regex: /-?\d+(\.\d+)?|\.\d+/ },
     { name: 'STRING', regex: /"(.*?)"/ },

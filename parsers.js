@@ -21,12 +21,7 @@ function parse(tokens) {
         } else if (tokens[current].type === 'IDENTIFIER') {
             const identifier = tokens[current].value;
             current++;
-            // Verificar si la variable existe en el entorno
-            if (environment.hasOwnProperty(identifier)) {
-                return environment[identifier];
-            } else {
-                throw new Error(`Variable "${identifier}" not defined.`);
-            }
+            return identifier;
         } else if (tokens[current].type === 'LPAREN') {
             consume('LPAREN');
             const result = evaluate();
@@ -36,7 +31,6 @@ function parse(tokens) {
             throw new Error(`Unexpected token in expression: ${tokens[current].type}`);
         }
     }
-
 
     function evaluate() {
         let left = expression();
@@ -66,27 +60,6 @@ function parse(tokens) {
 
         return left;
     }
-
-
-
-
-    // function expression() {
-    //     if (tokens[current].type === 'STRING') {
-    //         const value = tokens[current].value;
-    //         current++;
-    //         return value;
-    //     } else if (tokens[current].type === 'NUMBER') {
-    //         const value = tokens[current].value;
-    //         current++;
-    //         return value;
-    //     } else if (tokens[current].type === 'IDENTIFIER') {
-    //         const identifier = tokens[current].value;
-    //         current++;
-    //         return identifier;
-    //     } else {
-    //         throw new Error(`Unexpected token in expression: ${tokens[current].type}`);
-    //     }
-    // }
 
     function statement() {
         if (tokens[current].type === 'VAR') {
@@ -129,16 +102,24 @@ function parse(tokens) {
             consume('RPAREN');
             consume('SEMICOLON');
             return { type: 'seeConsoleStatement' };
+        } else if (tokens[current].type === 'HIFLUTAR') {
+            consume('HIFLUTAR');
+            consume('LPAREN');
+            consume('RPAREN');
+            consume('SEMICOLON');
+            return { type: 'hiFlutar' };
         } else if (tokens[current].type === 'RETURN') {
             consume('RETURN');
+            consume('LBRACE');
             const value = expression();
+            consume('RBRACE');
             consume('SEMICOLON');
             return { type: 'returnStatement', value };
         } else if (tokens[current].type === 'FOR') {
             consume('FOR');
             consume('LPAREN');
             consume('VAR');
-            const identifier = tokens[current].value || 0;
+            const identifier = tokens[current].value;
             consume('IDENTIFIER');
             consume('EQUALS');
             let initialization = expression();
@@ -156,7 +137,26 @@ function parse(tokens) {
             consume('RBRACE');
 
             return { type: 'forLoop', identifier, initialization, condition, increment, body, functionBody };
+        } else if (tokens[current].type === 'IF') {
+            consume('IF');
+            consume('LPAREN');
+            let val1 = expression();
+
+            const operator = tokens[current].value;
+            consume('OPERATOR');
+
+            let val2 = expression();
+
+            consume('RPAREN');
+            consume('LBRACE');
+            const functionBody = [];
+            while (tokens[current].type !== 'RBRACE') {
+                functionBody.push(statement());
+            }
+            consume('RBRACE');
+            return { type: 'ifState', val1, val2, operator, functionBody };
         }
+
         else if (tokens[current].type === 'FUNCTION') {
             consume('FUNCTION');
             const functionName = tokens[current].value;

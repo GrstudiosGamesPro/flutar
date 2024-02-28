@@ -1,4 +1,5 @@
 const { json } = require("stream/consumers");
+const app = require('./flutar_apps/flutar_html.js');
 
 function execute(statements, environment = {}) {
 
@@ -41,6 +42,8 @@ function execute(statements, environment = {}) {
             console.log(evaluateExpression(statement.value));
         } else if (statement.type === 'seeConsoleStatement') {
             console.log("Hello from console!");
+        } else if (statement.type === 'hiFlutar') {
+            app.hi_flutar();
         } else if (statement.type === 'functionDeclaration') {
             environment[statement.functionName] = (...args) => {
                 const newEnvironment = { ...environment };
@@ -65,6 +68,54 @@ function execute(statements, environment = {}) {
             } else {
                 throw new Error(`Function "${statement.functionName}" is not defined.`);
             }
+        } else if (statement.type === 'ifState') {
+            let stateIf = statement.operator;
+            let val1 = evaluateExpression(statement.val1);
+            let val2 = evaluateExpression(statement.val2);
+
+            if (stateIf === '>') {
+                if (val1 > val2) {
+                    execute(statement.functionBody, environment);
+                }
+            } else if (stateIf === '<') {
+                if (val1 < val2) {
+                    execute(statement.functionBody, environment);
+                }
+            } else if (stateIf === '>=') {
+                if (val1 >= val2) {
+                    execute(statement.functionBody, environment);
+                }
+            } else if (stateIf === '<=') {
+                if (val1 <= val2) {
+                    execute(statement.functionBody, environment);
+                }
+            } else if (stateIf === '=') {
+                if (val1 === val2) {
+                    execute(statement.functionBody, environment);
+                }
+            } else if (stateIf === '!=') {
+                if (val1 !== val2) {
+                    execute(statement.functionBody, environment);
+                }
+            } else if (stateIf === '&&') {
+                if (val1 && val2) {
+                    execute(statement.functionBody, environment);
+                }
+            } else if (stateIf === '||') {
+                if (val1 || val2) {
+                    execute(statement.functionBody, environment);
+                }
+            } else if (stateIf === '!') {
+                if (!val1) {
+                    execute(statement.functionBody, environment);
+                }
+            } else if (stateIf === 'else') {
+                if (statement.elseFunctionBody) {
+                    execute(statement.elseFunctionBody, environment);
+                }
+            }
+
+
         } else if (statement.type === 'forLoop') {
             const initialization = evaluateExpression(statement.initialization);
             const condition = evaluateExpression(statement.condition);
