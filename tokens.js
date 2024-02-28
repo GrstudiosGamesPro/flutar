@@ -21,7 +21,6 @@ const tokens = [
     { name: 'DIVIDE', regex: /\// },
     { name: 'POWER', regex: /`/ },
     { name: 'PERCENTAGE', regex: /%/ },
-    { name: 'EXPONENTIAL', regex: /e\^/ }
 ];
 
 module.exports = tokens;

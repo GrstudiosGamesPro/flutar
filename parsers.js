@@ -40,7 +40,6 @@ function parse(tokens) {
             current++;
             const right = expression();
 
-            // Realizamos las operaciones dependiendo del operador
             if (operator === 'PLUS') {
                 left = parseFloat(left) + parseFloat(right);
             } else if (operator === 'MINUS') {
@@ -48,7 +47,6 @@ function parse(tokens) {
             } else if (operator === 'MULTIPLY') {
                 left = parseFloat(left) * parseFloat(right);
             } else if (operator === 'DIVIDE') {
-                // Verificamos que el divisor no sea cero
                 if (parseFloat(right) === 0) {
                     throw new Error("Division by zero");
                 }
@@ -57,8 +55,6 @@ function parse(tokens) {
                 left = Math.pow(parseFloat(left), parseFloat(right));
             } else if (operator === 'PERCENTAGE') {
                 left = parseFloat(left) * parseFloat(right) / 100;
-            } else if (operator === 'EXPONENTIAL') {
-                left = Math.exp(parseFloat(right));
             }
         }
 

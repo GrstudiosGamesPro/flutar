@@ -8,12 +8,12 @@ HI(hola);
 
 
 fun => prueba (){
-    return (5 ` 3);
+    return ( 5 * 5 * 2 * 5 * 76 / 500);
 }
 
 lex as : prueba();
 log(as);
 
-lex suma : (9 / 5);
+lex suma : (9 / 5 ` 3);
 
 log(suma);
