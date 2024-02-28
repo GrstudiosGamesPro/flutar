@@ -1,15 +1,19 @@
-    fun => b (a, b) <
-        return 123456789;
-    >
+lex hola : "HOLA BRO";
 
-    fun => c (b, g)<
-        log("HI!");
-        return "HOLA SOY MCLOVIN";
-    >
+fun => HI (A){
+    log(A);
+}
 
-    lex g : c(5, 2);
+HI(hola);
 
-    log(g);
 
-    lex hola : "HOLA PA";
-    log(hola);
+fun => prueba (){
+    return (5 ` 3);
+}
+
+lex as : prueba();
+log(as);
+
+lex suma : (9 / 5);
+
+log(suma);

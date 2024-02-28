@@ -9,8 +9,8 @@ const tokens = [
     { name: 'IDENTIFIER', regex: /(?:[a-zA-Z][a-zA-Z0-9]*|fun)/ },
     { name: 'LPAREN', regex: /\(/ },
     { name: 'RPAREN', regex: /\)/ },
-    { name: 'LBRACE', regex: /</ },
-    { name: 'RBRACE', regex: />/ },
+    { name: 'LBRACE', regex: /{/ },
+    { name: 'RBRACE', regex: /}/ },
     { name: 'EQUALS', regex: /:/ },
     { name: 'DOUBLEEQUALS', regex: /::/ },
     { name: 'SEMICOLON', regex: /;/ },
@@ -19,7 +19,9 @@ const tokens = [
     { name: 'MINUS', regex: /-/ },
     { name: 'MULTIPLY', regex: /\*/ },
     { name: 'DIVIDE', regex: /\// },
-    { name: 'WHITESPACE', regex: /\s+/, ignore: true },
+    { name: 'POWER', regex: /`/ },
+    { name: 'PERCENTAGE', regex: /%/ },
+    { name: 'EXPONENTIAL', regex: /e\^/ }
 ];
 
 module.exports = tokens;

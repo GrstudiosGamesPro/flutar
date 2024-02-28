@@ -14,14 +14,14 @@ function parse(tokens) {
             const value = tokens[current].value;
             current++;
             return value;
-        } else if (tokens[current].type === 'IDENTIFIER') {
-            const identifier = tokens[current].value;
-            current++;
-            return identifier;
         } else if (tokens[current].type === 'NUMBER') {
             const value = tokens[current].value;
             current++;
             return parseFloat(value);
+        } else if (tokens[current].type === 'IDENTIFIER') {
+            const identifier = tokens[current].value;
+            current++;
+            return identifier;
         } else if (tokens[current].type === 'LPAREN') {
             consume('LPAREN');
             const result = evaluate();
@@ -32,15 +32,41 @@ function parse(tokens) {
         }
     }
 
-
     function evaluate() {
-        let left_value = expression();
-        console.log("LEFT EXPRESSION: " + left_value);
-        current++;
-        let right_value = expression();
-        console.log("RIGHT EXPRESSION: " + right_value);
-        current++;
+        let left = expression();
+
+        while (tokens[current] && (tokens[current].type === 'PLUS' || tokens[current].type === 'MINUS' || tokens[current].type === 'MULTIPLY' || tokens[current].type === 'DIVIDE' || tokens[current].type === 'POWER' || tokens[current].type === 'PERCENTAGE' || tokens[current].type === 'EXPONENTIAL')) {
+            const operator = tokens[current].type;
+            current++;
+            const right = expression();
+
+            // Realizamos las operaciones dependiendo del operador
+            if (operator === 'PLUS') {
+                left = parseFloat(left) + parseFloat(right);
+            } else if (operator === 'MINUS') {
+                left = parseFloat(left) - parseFloat(right);
+            } else if (operator === 'MULTIPLY') {
+                left = parseFloat(left) * parseFloat(right);
+            } else if (operator === 'DIVIDE') {
+                // Verificamos que el divisor no sea cero
+                if (parseFloat(right) === 0) {
+                    throw new Error("Division by zero");
+                }
+                left = parseFloat(left) / parseFloat(right);
+            } else if (operator === 'POWER') {
+                left = Math.pow(parseFloat(left), parseFloat(right));
+            } else if (operator === 'PERCENTAGE') {
+                left = parseFloat(left) * parseFloat(right) / 100;
+            } else if (operator === 'EXPONENTIAL') {
+                left = Math.exp(parseFloat(right));
+            }
+        }
+
+        return left;
     }
+
+
+
 
     // function expression() {
     //     if (tokens[current].type === 'STRING') {
