@@ -2,6 +2,7 @@ lex hola : "HOLA BRO";
 
 fun => HI (A){
     log(A);
+
 }
 
 HI(hola);
@@ -17,3 +18,8 @@ log(as);
 lex suma : (9 / 5 ` 3);
 
 log(suma);
+
+for(lex i : 0, 10, 1){
+    HI("EJECUTANDO DESDE EL FOR");
+    log((i + 1));
+}

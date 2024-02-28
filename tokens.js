@@ -1,5 +1,8 @@
 const tokens = [
-    { name: 'NUMBER', regex: /\d+(\.\d+)?|\.\d+/ },
+    //LOOPS
+    { name: 'FOR', regex: /for/ },
+
+    { name: 'NUMBER', regex: /-?\d+(\.\d+)?|\.\d+/ },
     { name: 'STRING', regex: /"(.*?)"/ },
     { name: 'VAR', regex: /lex/ },
     { name: 'PRINT', regex: /log/ },

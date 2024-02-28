@@ -65,7 +65,29 @@ function execute(statements, environment = {}) {
             } else {
                 throw new Error(`Function "${statement.functionName}" is not defined.`);
             }
+        } else if (statement.type === 'forLoop') {
+            const initialization = evaluateExpression(statement.initialization);
+            const condition = evaluateExpression(statement.condition);
+            const increment = statement.increment;
+
+            if (condition > 0) {
+                for (let i = initialization; i < condition;) {
+                    environment[statement.identifier] = evaluateExpression(i);
+                    i += increment;
+                    execute(statement.functionBody, environment);
+                    execute(i, environment);
+                }
+            } else {
+                for (let i = initialization; i > condition;) {
+                    environment[statement.identifier] = evaluateExpression(i);
+                    i += increment;
+                    execute(statement.functionBody, environment);
+                    execute(i, environment);
+                }
+            }
         }
+
+
     }
 }
 

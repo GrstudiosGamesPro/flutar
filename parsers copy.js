@@ -21,12 +21,7 @@ function parse(tokens) {
         } else if (tokens[current].type === 'IDENTIFIER') {
             const identifier = tokens[current].value;
             current++;
-            // Verificar si la variable existe en el entorno
-            if (environment.hasOwnProperty(identifier)) {
-                return environment[identifier];
-            } else {
-                throw new Error(`Variable "${identifier}" not defined.`);
-            }
+            return identifier;
         } else if (tokens[current].type === 'LPAREN') {
             consume('LPAREN');
             const result = evaluate();
@@ -36,7 +31,6 @@ function parse(tokens) {
             throw new Error(`Unexpected token in expression: ${tokens[current].type}`);
         }
     }
-
 
     function evaluate() {
         let left = expression();
@@ -134,28 +128,6 @@ function parse(tokens) {
             const value = expression();
             consume('SEMICOLON');
             return { type: 'returnStatement', value };
-        } else if (tokens[current].type === 'FOR') {
-            consume('FOR');
-            consume('LPAREN');
-            consume('VAR');
-            const identifier = tokens[current].value || 0;
-            consume('IDENTIFIER');
-            consume('EQUALS');
-            let initialization = expression();
-            consume('COMMA');
-            let condition = expression();
-            consume('COMMA');
-            let increment = expression();
-            consume('RPAREN');
-            consume('LBRACE');
-            const functionBody = [];
-            while (tokens[current].type !== 'RBRACE') {
-                functionBody.push(statement());
-            }
-            let body = 1;
-            consume('RBRACE');
-
-            return { type: 'forLoop', identifier, initialization, condition, increment, body, functionBody };
         }
         else if (tokens[current].type === 'FUNCTION') {
             consume('FUNCTION');
