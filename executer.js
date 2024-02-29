@@ -1,8 +1,9 @@
 const { json } = require("stream/consumers");
 const app = require('./flutar_apps/flutar_html.js');
 
-function execute(statements, environment = {}) {
+let html_to_send = "";
 
+function execute(statements, environment = {}) {
     function evaluateExpression(expr) {
         if (!isNaN(expr)) {
             return expr;
@@ -44,6 +45,10 @@ function execute(statements, environment = {}) {
             console.log("Hello from console!");
         } else if (statement.type === 'hiFlutar') {
             app.hi_flutar();
+        } else if (statement.type === 'renderStatement') {
+            setInterval(() => {
+                execute(statement.functionBody, environment);
+            }, 1000);
         } else if (statement.type === 'functionDeclaration') {
             environment[statement.functionName] = (...args) => {
                 const newEnvironment = { ...environment };

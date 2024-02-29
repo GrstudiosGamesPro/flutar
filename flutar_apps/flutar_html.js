@@ -8,7 +8,7 @@ function hi_flutar(val) {
     const options = {
         hostname: 'localhost',
         port: 3000,
-        path: '/agregar-html',
+        path: '/add',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ function insert_html(val) {
     const options = {
         hostname: 'localhost',
         port: 3000,
-        path: '/agregar-html',
+        path: '/add',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

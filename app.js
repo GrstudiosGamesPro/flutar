@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 
 let additionalHtml = '';
 
-app.post('/agregar-html', (req, res) => {
+app.post('/add', (req, res) => {
     const { html } = req.body;
     additionalHtml += html;
     res.send('HTML agregado correctamente');

@@ -22,8 +22,9 @@ const tokens = [
     { name: 'VAR', regex: /lex/ },
     { name: 'PRINT', regex: /log/ },
     { name: 'CONSOLETEST', regex: /see_console/ },
-    { name: 'RETURN', regex: /return/ },
+    { name: 'RETURN', regex: /<return>/ },
     { name: 'FUNCTION', regex: /fun\s*=>/ },
+    { name: 'RENDER', regex: /render\s*=>/ },
     { name: 'IDENTIFIER', regex: /(?:[a-zA-Z][a-zA-Z0-9]*|fun)/ },
     { name: 'LPAREN', regex: /\(/ },
     { name: 'RPAREN', regex: /\)/ },
@@ -39,6 +40,7 @@ const tokens = [
     { name: 'DIVIDE', regex: /\// },
     { name: 'POWER', regex: /`/ },
     { name: 'PERCENTAGE', regex: /%/ },
+
 ];
 
 module.exports = tokens;

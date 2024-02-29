@@ -110,9 +110,7 @@ function parse(tokens) {
             return { type: 'hiFlutar' };
         } else if (tokens[current].type === 'RETURN') {
             consume('RETURN');
-            consume('LBRACE');
             const value = expression();
-            consume('RBRACE');
             consume('SEMICOLON');
             return { type: 'returnStatement', value };
         } else if (tokens[current].type === 'FOR') {
