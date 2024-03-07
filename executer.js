@@ -9,10 +9,13 @@ function execute(statements, environment = {}) {
             return expr;
         } else if (expr.startsWith('"') && expr.endsWith('"')) {
             return expr.slice(1, -1);
+        } else if (expr.startsWith('<') && expr.endsWith('>')) {
+            return expr;
         } else {
             return environment[expr];
         }
     }
+
 
     for (const variable in environment) {
         if (environment.hasOwnProperty(variable)) {
@@ -65,7 +68,7 @@ function execute(statements, environment = {}) {
 
                 for (let data of statement.functionBody) {
                     if (data.type === 'returnStatement') {
-                        environment['_returnValue'] = data.value;
+                        environment['_returnValue'] = evaluateExpression(data.value);
                         environment['_returnType'] = data.type;
                     }
                 }

@@ -1,9 +1,15 @@
 lex g : "SOY GOKU!";
 
-fun => hola (){
+fun nav (){
     return <div>
-            <h1 style="color:red; font-size: 100px;">Hi im flutar!!!</h1>
-        </div>;
+            <h1 style="color:black; font-size: 100px;">Hi im flutar!!!</h1>
+           </div>;
+}
+
+lex j : nav();
+
+fun hola (){
+    return j;
 }
 
 lex h : hola();
