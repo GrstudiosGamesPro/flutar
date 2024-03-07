@@ -50,7 +50,7 @@ function execute(statements, environment = {}) {
                 console.log("HTML:", environment['_returnValue']);
             }
         } else if (statement.type === 'sendToRenderStatement') {
-            app.sendToRender(environment['_returnValue']);
+            app.sendToRender(evaluateExpression(environment['_returnValue']));
         } else if (statement.type === 'seeConsoleStatement') {
             console.log("Hello from console!");
         } else if (statement.type === 'hiFlutar') {

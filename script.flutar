@@ -1,4 +1,4 @@
-lex g : "SOY GOKU!";
+lex g = "SOY GOKU!";
 
 fun navbar() {
     return <div style="background-color: #333; padding: 10px;">
@@ -11,12 +11,13 @@ fun navbar() {
     </div>;
 }
 
-lex j : navbar();
+lex j = navbar();
 
 fun hola (){
-    return j;
+    return navbar();
 }
 
-lex h : hola();
 
-sendToRender(h);
+lex k = hola();
+
+sendToRender(k);

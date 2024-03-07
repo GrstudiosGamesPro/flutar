@@ -33,7 +33,6 @@ function parse(tokens) {
 
             return html;
         }
-
         else if (tokens[current].type === 'LPAREN') {
             consume('LPAREN');
             const result = evaluate();
@@ -136,6 +135,26 @@ function parse(tokens) {
         } else if (tokens[current].type === 'RETURN') {
             consume('RETURN');
             const value = expression();
+
+            if (tokens[current].type === 'LPAREN') {
+                consume('LPAREN');
+                const args = [];
+                while (tokens[current].type !== 'RPAREN') {
+                    const result = expression();
+                    args.push(result);
+
+                    if (tokens[current].type === 'COMMA') {
+                        consume('COMMA');
+                    }
+                }
+
+                consume('RPAREN');
+                consume('SEMICOLON');
+
+                // Devuelve una estructura que representa una llamada de función
+                return { type: 'functionCallVariable', functionName: value, args };
+            }
+
             consume('SEMICOLON');
 
             return { type: 'returnStatement', value };
@@ -180,7 +199,6 @@ function parse(tokens) {
             consume('RBRACE');
             return { type: 'ifState', val1, val2, operator, functionBody };
         }
-
         else if (tokens[current].type === 'FUNCTION') {
             consume('FUNCTION');
             const functionName = tokens[current].value;
