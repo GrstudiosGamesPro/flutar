@@ -1,12 +1,17 @@
 lex g : "SOY GOKU!";
 
-fun nav (){
-    return <div>
-            <h1 style="color:black; font-size: 100px;">Hi im flutar!!!</h1>
-           </div>;
+fun navbar() {
+    return <div style="background-color: #333; padding: 10px;">
+        <ul style="list-style-type: none; margin: 0; padding: 0; display: flex; justify-content: center;">
+            <li style="margin-right: 20px;"><a href="game" style="color: white; text-decoration: none;">Inicio</a></li>
+            <li style="margin-right: 20px;"><a href="#" style="color: white; text-decoration: none;">Acerca de</a></li>
+            <li style="margin-right: 20px;"><a href="#" style="color: white; text-decoration: none;">Servicios</a></li>
+            <li><a href="#" style="color: white; text-decoration: none;">Contacto</a></li>
+        </ul>
+    </div>;
 }
 
-lex j : nav();
+lex j : navbar();
 
 fun hola (){
     return j;
