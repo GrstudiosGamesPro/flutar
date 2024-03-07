@@ -40,7 +40,14 @@ function execute(statements, environment = {}) {
             }
         }
         else if (statement.type === 'printStatement') {
-            console.log(evaluateExpression(statement.value));
+            const value = evaluateExpression(statement.value);
+            if (typeof value === 'string') {
+                console.log(value);
+            } else {
+                console.log("HTML:", environment['_returnValue']);
+            }
+        } else if (statement.type === 'sendToRenderStatement') {
+            app.sendToRender(environment['_returnValue']);
         } else if (statement.type === 'seeConsoleStatement') {
             console.log("Hello from console!");
         } else if (statement.type === 'hiFlutar') {
@@ -59,6 +66,7 @@ function execute(statements, environment = {}) {
                 for (let data of statement.functionBody) {
                     if (data.type === 'returnStatement') {
                         environment['_returnValue'] = data.value;
+                        environment['_returnType'] = data.type;
                     }
                 }
 

@@ -36,7 +36,7 @@ function hi_flutar(val) {
     req.end();
 }
 
-function insert_html(val) {
+function sendToRender(val) {
     const htmlToAdd = val;
 
     const data = JSON.stringify({ html: htmlToAdd });
@@ -72,5 +72,4 @@ function insert_html(val) {
     req.end();
 }
 
-
-module.exports = { insert_html, hi_flutar };
+module.exports = { hi_flutar, sendToRender };

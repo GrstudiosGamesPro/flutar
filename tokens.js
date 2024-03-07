@@ -1,7 +1,4 @@
 const tokens = [
-    // Operadores booleanos
-    { name: 'OPERATOR', regex: /(&&|\|\||!|<=|>=|=|<|>)/ },
-
     // Palabras clave booleanas
     { name: 'TRUE', regex: /true/ },
     { name: 'FALSE', regex: /false/ },
@@ -21,11 +18,14 @@ const tokens = [
     { name: 'STRING', regex: /"(.*?)"/ },
     { name: 'VAR', regex: /lex/ },
     { name: 'PRINT', regex: /log/ },
+    { name: 'SENDTORENDER', regex: /sendToRender/ },
     { name: 'CONSOLETEST', regex: /see_console/ },
-    { name: 'RETURN', regex: /<return>/ },
+    { name: 'RETURN', regex: /return/ },
     { name: 'FUNCTION', regex: /fun\s*=>/ },
     { name: 'RENDER', regex: /render\s*=>/ },
+    { name: 'HTML', regex: /<([a-zA-Z][^\s>]*)[^>]*>[\s\S]*?<\/\1>/ },
     { name: 'IDENTIFIER', regex: /(?:[a-zA-Z][a-zA-Z0-9]*|fun)/ },
+    { name: 'OPERATOR', regex: /(&&|\|\||!|<=|>=|=|<|>)/ },
     { name: 'LPAREN', regex: /\(/ },
     { name: 'RPAREN', regex: /\)/ },
     { name: 'LBRACE', regex: /{/ },
@@ -40,7 +40,6 @@ const tokens = [
     { name: 'DIVIDE', regex: /\// },
     { name: 'POWER', regex: /`/ },
     { name: 'PERCENTAGE', regex: /%/ },
-
 ];
 
 module.exports = tokens;

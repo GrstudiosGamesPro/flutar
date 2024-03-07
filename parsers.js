@@ -22,7 +22,19 @@ function parse(tokens) {
             const identifier = tokens[current].value;
             current++;
             return identifier;
-        } else if (tokens[current].type === 'LPAREN') {
+        } else if (tokens[current].type === 'HTML') {
+            const htmlStartIndex = current;
+            let html = '';
+
+            while (tokens[current].type === 'HTML') {
+                html += tokens[current].value;
+                current++;
+            }
+
+            return html;
+        }
+
+        else if (tokens[current].type === 'LPAREN') {
             consume('LPAREN');
             const result = evaluate();
             consume('RPAREN');
@@ -31,6 +43,7 @@ function parse(tokens) {
             throw new Error(`Unexpected token in expression: ${tokens[current].type}`);
         }
     }
+
 
     function evaluate() {
         let left = expression();
@@ -66,13 +79,12 @@ function parse(tokens) {
             consume('VAR');
             const identifier = tokens[current].value;
             consume('IDENTIFIER');
+
             consume('EQUALS');
             let value = expression();
 
-            if (tokens[current].type !== 'LPAREN') {
-                consume('SEMICOLON');
-                return { type: 'variableDeclaration', identifier, value };
-            } else if (tokens[current].type === 'LPAREN') {
+            // Verifica si el valor es una llamada de función
+            if (tokens[current].type === 'LPAREN') {
                 consume('LPAREN');
                 const args = [];
                 while (tokens[current].type !== 'RPAREN') {
@@ -84,18 +96,31 @@ function parse(tokens) {
                     }
                 }
 
-
                 consume('RPAREN');
                 consume('SEMICOLON');
+
+                // Devuelve una estructura que representa una llamada de función
                 return { type: 'functionCallVariable', functionName: value, args, identifier };
+            } else {
+                // Si no es una llamada de función, es una simple asignación de variable
+                consume('SEMICOLON');
+                return { type: 'variableDeclaration', identifier, value };
             }
-        } else if (tokens[current].type === 'PRINT') {
+        }
+        else if (tokens[current].type === 'PRINT') {
             consume('PRINT');
             consume('LPAREN');
             const value = expression();
             consume('RPAREN');
             consume('SEMICOLON');
             return { type: 'printStatement', value };
+        } else if (tokens[current].type === 'SENDTORENDER') {
+            consume('SENDTORENDER');
+            consume('LPAREN');
+            const value = expression();
+            consume('RPAREN');
+            consume('SEMICOLON');
+            return { type: 'sendToRenderStatement', value };
         } else if (tokens[current].type === 'CONSOLETEST') {
             consume('CONSOLETEST');
             consume('LPAREN');
@@ -112,6 +137,7 @@ function parse(tokens) {
             consume('RETURN');
             const value = expression();
             consume('SEMICOLON');
+
             return { type: 'returnStatement', value };
         } else if (tokens[current].type === 'FOR') {
             consume('FOR');
@@ -205,7 +231,8 @@ function parse(tokens) {
             } else {
                 throw new Error(`Unexpected token after identifier: ${tokens[current].type}`);
             }
-        } else {
+        }
+        else {
             throw new Error(`Unexpected token in statement: ${tokens[current].type}`);
         }
 
