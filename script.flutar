@@ -1,14 +1,7 @@
 lex g = "SOY GOKU!";
 
 fun navbar() {
-    return <div style="background-color: #333; padding: 10px;">
-        <ul style="list-style-type: none; margin: 0; padding: 0; display: flex; justify-content: center;">
-            <li style="margin-right: 20px;"><a href="game" style="color: white; text-decoration: none;">Inicio</a></li>
-            <li style="margin-right: 20px;"><a href="#" style="color: white; text-decoration: none;">Acerca de</a></li>
-            <li style="margin-right: 20px;"><a href="#" style="color: white; text-decoration: none;">Servicios</a></li>
-            <li><a href="#" style="color: white; text-decoration: none;">Contacto</a></li>
-        </ul>
-    </div>;
+    return <navbar>"HOME='', CONTACT='CONTACT', GOOGLE='https://chat.openai.com/c/a4e4e698-5163-49c4-a8ef-160fa809c3f8'"</navbar>;
 }
 
 lex j = navbar();
