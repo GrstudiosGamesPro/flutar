@@ -1,5 +1,7 @@
 fun navbar() {
-    return <navbar>"HOME='#', CONTACT='HOME'"</navbar>;
+    return 
+            <navbar>"HOME='#', CONTACT='HOME'"</navbar> 
+            <h1>BYE</h1>;
 }
 
 lex j = navbar();

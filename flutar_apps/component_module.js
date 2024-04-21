@@ -16,7 +16,7 @@ function verify_component(texto) {
     `<${component}>["'].*?["']<\/${component}>`
   ).test(texto);
 
-  let navtext = texto;
+  console.log(texto);
 
   let textComponent = match[2];
   var navarWt = textComponent.slice(1, -1);
@@ -35,16 +35,29 @@ function verify_component(texto) {
 }
 
 function navbar_component(text) {
-  app.sendToRender(`<nav style="background-color: #333; color: white; padding: 10px; font-family: Arial, sans-serif;">
-                                      ${text
-                                        .map(
-                                          (item) =>
-                                            `<li style="display: inline; margin-right: 20px;"><a style="text-decoration: none; color: white;" href="${obtenerURL(
-                                              item
-                                            )}">${item.split("='")[0]}</a></li>`
-                                        )
-                                        .join("")}
-                                    </nav>`);
+  const navbarItems = text.map((item) => {
+    const [label, url] = item.split("='");
+    return `<li style="display: inline; margin-right: 20px;">
+              <a style="text-decoration: none; color: white;" href="${url.trim()}">${label.trim()}</a>
+            </li>`;
+  });
+
+  const navbarStyle = `
+    background-color: #11101d;
+    color: white;
+    padding: 10px;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+`;
+
+  const navbar = `
+  <nav style="${navbarStyle}">
+    ${navbarItems.join("")}
+  </nav>
+`;
+
+  app.sendToRender(navbar);
 }
 
 module.exports = { verify_component };
