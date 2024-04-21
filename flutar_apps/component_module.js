@@ -49,13 +49,13 @@ function navbar_component(text) {
     font-family: Arial, sans-serif;
     display: flex;
     justify-content: center;
-`;
+  `;
 
   const navbar = `
   <nav style="${navbarStyle}">
     ${navbarItems.join("")}
   </nav>
-`;
+  `;
 
   app.sendToRender(navbar);
 }
