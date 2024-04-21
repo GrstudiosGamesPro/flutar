@@ -1,0 +1,25 @@
+{
+  "name": "flutar",
+  "displayName": "flutar",
+  "description": "flutar",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.88.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "flutar",
+      "aliases": ["flutar", "flutar"],
+      "extensions": [".flutar"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "flutar",
+      "scopeName": "flutar",
+      "path": "./syntaxes/flutar.tmLanguage.json"
+    }]
+  }
+}

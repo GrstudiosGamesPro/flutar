@@ -1,7 +1,5 @@
-lex g = "SOY GOKU!";
-
 fun navbar() {
-    return <navbar>"HOME='', CONTACT='CONTACT', GOOGLE='https://chat.openai.com/c/a4e4e698-5163-49c4-a8ef-160fa809c3f8'"</navbar>;
+    return <navbar>"HOME='#', CONTACT='HOME'"</navbar>;
 }
 
 lex j = navbar();
@@ -9,7 +7,6 @@ lex j = navbar();
 fun hola (){
     return navbar();
 }
-
 
 lex k = hola();
 

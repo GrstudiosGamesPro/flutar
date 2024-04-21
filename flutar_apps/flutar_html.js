@@ -1,75 +1,75 @@
-const http = require('http');
+const http = require("http");
 
 function hi_flutar(val) {
-    const htmlToAdd = '<h1>Hi! im flutar</h1>';
+  const htmlToAdd = "<h1>Hi! im flutar</h1>";
 
-    const data = JSON.stringify({ html: htmlToAdd });
+  const data = JSON.stringify({ html: htmlToAdd });
 
-    const options = {
-        hostname: 'localhost',
-        port: 3000,
-        path: '/add',
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': data.length
-        }
-    };
+  const options = {
+    hostname: "localhost",
+    port: 3000,
+    path: "/add",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Length": data.length,
+    },
+  };
 
-    const req = http.request(options, (res) => {
-        let responseData = '';
+  const req = http.request(options, (res) => {
+    let responseData = "";
 
-        res.on('data', (chunk) => {
-            responseData += chunk;
-        });
-
-        res.on('end', () => {
-            console.log('Respuesta del servidor:', responseData);
-        });
+    res.on("data", (chunk) => {
+      responseData += chunk;
     });
 
-    req.on('error', (e) => {
-        console.error(`Error en la solicitud: ${e.message}`);
+    res.on("end", () => {
+      console.log("Respuesta del servidor:", responseData);
     });
+  });
 
-    req.write(data);
-    req.end();
+  req.on("error", (e) => {
+    console.error(`Error en la solicitud: ${e.message}`);
+  });
+
+  req.write(data);
+  req.end();
 }
 
 function sendToRender(val) {
-    const htmlToAdd = val;
+  const htmlToAdd = val;
 
-    const data = JSON.stringify({ html: htmlToAdd });
+  const data = JSON.stringify({ html: htmlToAdd });
 
-    const options = {
-        hostname: 'localhost',
-        port: 3000,
-        path: '/add',
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Content-Length': data.length
-        }
-    };
+  const options = {
+    hostname: "localhost",
+    port: 3000,
+    path: "/add",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Length": data.length,
+    },
+  };
 
-    const req = http.request(options, (res) => {
-        let responseData = '';
+  const req = http.request(options, (res) => {
+    let responseData = "";
 
-        res.on('data', (chunk) => {
-            responseData += chunk;
-        });
-
-        res.on('end', () => {
-            console.log('Respuesta del servidor:', responseData);
-        });
+    res.on("data", (chunk) => {
+      responseData += chunk;
     });
 
-    req.on('error', (e) => {
-        console.error(`Error en la solicitud: ${e.message}`);
+    res.on("end", () => {
+      console.log("Respuesta del servidor:", responseData);
     });
+  });
 
-    req.write(data);
-    req.end();
+  req.on("error", (e) => {
+    console.error(`Error en la solicitud: ${e.message}`);
+  });
+
+  req.write(data);
+  req.end();
 }
 
 module.exports = { hi_flutar, sendToRender };

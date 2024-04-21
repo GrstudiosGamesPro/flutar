@@ -51,41 +51,9 @@ function execute(statements, environment = {}) {
         console.log("HTML:", environment["_returnValue"]);
       }
     } else if (statement.type === "sendToRenderStatement") {
-      const regex = /<(\w+)>(.*?)<\/\1>/;
-      const match = evaluateExpression(environment["_returnValue"]).match(
-        regex
+      components.verify_component(
+        evaluateExpression(environment["_returnValue"])
       );
-
-      if (
-        components.verify_component(
-          evaluateExpression(environment["_returnValue"]),
-          match[1]
-        ).existComponent
-      ) {
-        var navar = components.verify_component(
-          evaluateExpression(environment["_returnValue"]),
-          match[1]
-        ).text;
-
-        function obtenerURL(texto) {
-          let inicio = texto.indexOf("='") + 2;
-          let fin = texto.lastIndexOf("'");
-          return texto.substring(inicio, fin);
-        }
-
-        app.sendToRender(`<nav style="background-color: #333; color: white; padding: 10px; font-family: Arial, sans-serif;">
-                                      ${navar
-                                        .map(
-                                          (item) =>
-                                            `<li style="display: inline; margin-right: 20px;"><a style="text-decoration: none; color: white;" href="${obtenerURL(
-                                              item
-                                            )}">${item.split("='")[0]}</a></li>`
-                                        )
-                                        .join("")}
-                                    </nav>`);
-      } else {
-        app.sendToRender(evaluateExpression(environment["_returnValue"]));
-      }
     } else if (statement.type === "seeConsoleStatement") {
       console.log("Hello from console!");
     } else if (statement.type === "hiFlutar") {
