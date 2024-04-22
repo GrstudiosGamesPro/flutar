@@ -1,0 +1,5 @@
+fun hola (){
+    return <navbar>"HOME=home, CONTACT=#" </navbar>;
+}
+
+register_this => "contact" :: hola();

@@ -16,19 +16,31 @@ function verify_component(page, texto) {
     const content = match[2] || match[4];
     const index = match.index;
 
+    const replacedContent = content.replace(/\(([^)]+)\)/g, (match, p1) => {
+      try {
+        return eval(p1).toString();
+      } catch (error) {
+        return match;
+      }
+    });
+
     if (index > lastIndex) {
       app.sendToRender(page, texto.slice(lastIndex, index));
     }
 
     if (component === "navbar") {
-      const cleanedContent = content.replace(/^"/, "").replace(/"$/, "");
+      let cleanedContent = replacedContent.replace(/^"/, "").replace(/"$/, "");
+
+      if (cleanedContent.endsWith("'")) {
+        cleanedContent = cleanedContent.slice(0, -1);
+      }
 
       setTimeout(() => {
         navbar_component(page, cleanedContent.split(", "));
       }, 0.1);
     } else {
       setTimeout(() => {
-        app.sendToRender(page, content);
+        app.sendToRender(page, replacedContent);
       }, 0.1);
     }
 
@@ -42,17 +54,16 @@ function verify_component(page, texto) {
 
 function navbar_component(page, text) {
   const navbarItems = text.map((item) => {
-    const [label, url] = item.split("='");
-    const cleanUrl = url.replace(/'$/, "");
-    return `<li class='nav_li'">
-              <a href="${cleanUrl}">${label}</a>
+    const [label, url] = item.split("=");
+    return `<li class='nav_li'>
+              <a href="${url.trim()}">${label.trim()}</a>
             </li>`;
   });
 
   const navbar = `
-  <nav class='nav_manager'">
+  <nav class='nav_manager'>
   <div class='nav_logo'>
-    <h1>LOGO</h1>
+    <h1>FLUTAR</h1>
   </div>
   
     ${navbarItems.join("")}

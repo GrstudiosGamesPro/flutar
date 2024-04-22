@@ -48,11 +48,18 @@ function execute(statements, environment = {}) {
         console.log("HTML:", environment["_returnValue"]);
       }
     } else if (statement.type === "registerPage") {
-      console.log("REGISTERING PAGE START");
-
       const value = evaluateExpression(statement.name);
       if (typeof value === "string") {
         const func = environment[statement.functionName];
+        const args = statement.args.map((arg) => evaluateExpression(arg));
+
+        func(...args);
+
+        if (environment["_returnValue"] !== undefined) {
+          environment[statement.identifier] = evaluateExpression(
+            environment["_returnValue"]
+          );
+        }
 
         app.register_page(value);
 
