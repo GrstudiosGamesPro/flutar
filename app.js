@@ -17,7 +17,7 @@ app.post("/add", (req, res) => {
 
 app.get("/", (req, res) => {
   const cssadd = `
-    <link rel="stylesheet" type="text/css" href="/style.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/GrstudiosGamesPro/flutar@main/assets/css/style.css">
   `;
 
   const html = `
