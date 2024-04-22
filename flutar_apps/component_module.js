@@ -6,7 +6,7 @@ function obtenerURL(texto) {
   return texto.substring(inicio, fin);
 }
 
-function verify_component(texto) {
+function verify_component(page, texto) {
   const regex = /<(\w+)>(.*?)<\/\1>|<(\w+)>([^<]*)/g;
   let match;
   let lastIndex = 0;
@@ -17,18 +17,18 @@ function verify_component(texto) {
     const index = match.index;
 
     if (index > lastIndex) {
-      app.sendToRender(texto.slice(lastIndex, index));
+      app.sendToRender(page, texto.slice(lastIndex, index));
     }
 
     if (component === "navbar") {
       const cleanedContent = content.replace(/^"/, "").replace(/"$/, "");
 
       setTimeout(() => {
-        navbar_component(cleanedContent.split(", "));
+        navbar_component(page, cleanedContent.split(", "));
       }, 0.1);
     } else {
       setTimeout(() => {
-        app.sendToRender(content);
+        app.sendToRender(page, content);
       }, 0.1);
     }
 
@@ -36,11 +36,11 @@ function verify_component(texto) {
   }
 
   if (lastIndex < texto.length) {
-    app.sendToRender(texto.slice(lastIndex));
+    app.sendToRender(page, texto.slice(lastIndex));
   }
 }
 
-function navbar_component(text) {
+function navbar_component(page, text) {
   const navbarItems = text.map((item) => {
     const [label, url] = item.split("='");
     const cleanUrl = url.replace(/'$/, "");
@@ -59,7 +59,7 @@ function navbar_component(text) {
   </nav>
   `;
 
-  app.sendToRender(navbar);
+  app.sendToRender(page, navbar);
 }
 
 module.exports = { verify_component };

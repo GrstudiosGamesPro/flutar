@@ -1,3 +1,4 @@
+
 fun hola (){
     return <navbar>"HOME='#', CONTACT='contact'"</navbar> <h1>HOLA</h1>;
 }
@@ -5,6 +6,4 @@ fun hola (){
 lex nav = hola();
 
 
-if (5 > 2){
-    sendToRender(hola());
-}
+register_this => "home" :: hola();

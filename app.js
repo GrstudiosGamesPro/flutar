@@ -7,34 +7,74 @@ const port = 3000;
 // Parsea las solicitudes con formato JSON
 app.use(bodyParser.json());
 
-let additionalHtml = "";
+let additionalHtml = [];
+const registeredPages = {};
 
 app.post("/add", (req, res) => {
-  const { html } = req.body;
-  additionalHtml += html;
-  //res.send("HTML agregado correctamente");
+  const { page, html } = req.body;
+  console.log("AGREGANDO HTML A LA PAGINA: " + page + " el html \n" + html);
+  if (registeredPages[page]) {
+    registeredPages[page].additionalHtml += html;
+    const additionalHtml = registeredPages[page].additionalHtml;
+    res.send(additionalHtml);
+    console.log(registeredPages);
+  } else {
+    res.status(404).send("Page not found");
+  }
+});
+
+app.post("/register_new_page", (req, res) => {
+  const { page } = req.body;
+  registeredPages[page] = true;
+  registeredPages[page] = { additionalHtml: "" };
+  res.send(`Page ${page} registered successfully!`);
+});
+
+app.get("/registered_pages", (req, res) => {
+  res.json(Object.keys(registeredPages));
+});
+
+app.get("/:page", (req, res) => {
+  const { page } = req.params;
+  if (registeredPages[page]) {
+    const cssadd = `<link rel="stylesheet" type="text/css" href="/css/style.css" />`;
+    const additionalHtml = registeredPages[page].additionalHtml;
+
+    const html = `
+      <html>
+        <head>
+          ${cssadd}
+        </head>
+        <body>
+        ${additionalHtml}
+        </body>
+      </html>`;
+    res.send(html);
+  } else {
+    res.status(404).send("Page not found");
+  }
 });
 
 app.use(express.static(__dirname + "/public"));
 
-app.get("/", (req, res) => {
-  const cssadd = `
-    <link rel="stylesheet" type="text/css" href="/css/style.css" />
-  `;
+// app.get("/", (req, res) => {
+//   const cssadd = `
+//     <link rel="stylesheet" type="text/css" href="/css/style.css" />
+//   `;
 
-  const html = `
-  <head>
-    ${cssadd}
-  </head>
-    <html>
-      <body>
-        ${additionalHtml}
-      </body>
-    </html>
-  `;
+//   const html = `
+//   <head>
+//     ${cssadd}
+//   </head>
+//     <html>
+//       <body>
+//         ${additionalHtml}
+//       </body>
+//     </html>
+//   `;
 
-  res.send(html);
-});
+//   res.send(html);
+// });
 
 app.use((req, res, next) => {
   res.status(404).send(`

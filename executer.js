@@ -1,8 +1,5 @@
-const { json } = require("stream/consumers");
 const app = require("./flutar_apps/flutar_html.js");
 const components = require("./flutar_apps/component_module.js");
-
-let html_to_send = "";
 
 function execute(statements, environment = {}) {
   function evaluateExpression(expr) {
@@ -50,28 +47,44 @@ function execute(statements, environment = {}) {
       } else {
         console.log("HTML:", environment["_returnValue"]);
       }
-    } else if (statement.type === "sendToRenderStatement") {
-      if (environment[statement.functionName]) {
+    } else if (statement.type === "registerPage") {
+      console.log("REGISTERING PAGE START");
+
+      const value = evaluateExpression(statement.name);
+      if (typeof value === "string") {
         const func = environment[statement.functionName];
-        // const args = statement.args.map((arg) => evaluateExpression(arg));
 
-        // func(...args);
+        app.register_page(value);
 
-        if (environment["_returnValue"] !== undefined) {
-          components.verify_component(
-            evaluateExpression(environment["_returnValue"])
-          );
-
-          console.log(environment["_returnValue"]);
-        }
-      } else {
         components.verify_component(
+          value,
           evaluateExpression(environment["_returnValue"])
         );
-        console.log(environment["_returnValue"]);
-        //throw new Error(`Function "${statement.functionName}" is not defined.`);
+      } else {
+        console.log("HTML:", environment["_returnValue"]);
       }
-    } else if (statement.type === "seeConsoleStatement") {
+      // } else if (statement.type === "sendToRenderStatement") {
+      //   if (environment[statement.functionName]) {
+      //     const func = environment[statement.functionName];
+      //     // const args = statement.args.map((arg) => evaluateExpression(arg));
+
+      //     // func(...args);
+
+      //     if (environment["_returnValue"] !== undefined) {
+      //       components.verify_component(
+      //         evaluateExpression(environment["_returnValue"])
+      //       );
+
+      //       console.log(environment["_returnValue"]);
+      //     }
+      //   } else {
+      //     components.verify_component(
+      //       evaluateExpression(environment["_returnValue"])
+      //     );
+      //     console.log(environment["_returnValue"]);
+      //     //throw new Error(`Function "${statement.functionName}" is not defined.`);
+      //   }
+      // } else if (statement.type === "seeConsoleStatement") {
       console.log("Hello from console!");
     } else if (statement.type === "hiFlutar") {
       app.hi_flutar();

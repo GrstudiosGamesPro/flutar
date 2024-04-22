@@ -125,7 +125,6 @@ function parse(tokens) {
       return { type: "printStatement", value };
     } else if (tokens[current].type === "SENDTORENDER") {
       consume("SENDTORENDER");
-      consume("LPAREN");
       const value = expression();
 
       if (tokens[current].type === "LPAREN") {
@@ -142,7 +141,6 @@ function parse(tokens) {
         }
 
         consume("RPAREN");
-        consume("RPAREN");
         consume("SEMICOLON");
 
         return {
@@ -151,10 +149,40 @@ function parse(tokens) {
           args,
         };
       } else {
-        consume("RPAREN");
         consume("SEMICOLON");
         return { type: "sendToRenderStatement", value };
       }
+    } else if (tokens[current].type === "REGISTERWINDOW") {
+      consume("REGISTERWINDOW");
+      const value = expression();
+
+      consume("DOUBLEEQUALS");
+
+      const functionValue = expression();
+      if (tokens[current].type === "LPAREN") {
+        consume("LPAREN");
+        const args = [];
+        while (tokens[current].type !== "RPAREN") {
+          const result = expression();
+          args.push(result);
+
+          if (tokens[current].type === "COMMA") {
+            consume("COMMA");
+          }
+        }
+
+        consume("RPAREN");
+        consume("SEMICOLON");
+
+        return {
+          type: "registerPage",
+          functionName: functionValue,
+          name: value,
+          args,
+        };
+      }
+      consume("SEMICOLON");
+      return { type: "registerPage", value };
     } else if (tokens[current].type === "CONSOLETEST") {
       consume("CONSOLETEST");
       consume("LPAREN");
