@@ -12,12 +12,11 @@ const registeredPages = {};
 
 app.post("/add", (req, res) => {
   const { page, html } = req.body;
-  console.log("AGREGANDO HTML A LA PAGINA: " + page + " el html \n" + html);
+  //console.log("AGREGANDO HTML A LA PAGINA: " + page + " el html \n" + html);
   if (registeredPages[page]) {
     registeredPages[page].additionalHtml += html;
     const additionalHtml = registeredPages[page].additionalHtml;
     res.send(additionalHtml);
-    console.log(registeredPages);
   } else {
     res.status(404).send("Page not found");
   }

@@ -60,7 +60,7 @@ function sendToRender(pg, val) {
     });
 
     res.on("end", () => {
-      console.log("Respuesta del servidor:", responseData);
+      //console.log("Respuesta del servidor:", responseData);
     });
   });
 
