@@ -7,31 +7,33 @@ function obtenerURL(texto) {
 }
 
 function verify_component(texto) {
-  const regex = /<(\w+)>(.*?)<\/\1>/;
-  const match = texto.match(regex);
+  const regex = /<(\w+)>(.*?)<\/\1>/g;
+  let match;
+  const components = [];
 
-  const component = match[1];
+  while ((match = regex.exec(texto)) !== null) {
+    const component = match[1];
+    const content = match[2];
 
-  const existComponent = new RegExp(
-    `<${component}>["'].*?["']<\/${component}>`
-  ).test(texto);
-
-  console.log(texto);
-
-  let textComponent = match[2];
-  var navarWt = textComponent.slice(1, -1);
-  let txt = navarWt.replace(new RegExp(`<\/?${component}>`, "g"), "");
-  var text = txt.split(", ");
-
-  console.log("Component type: " + component);
-
-  if (component == "navbar") {
-    navbar_component(text);
-  } else {
-    app.sendToRender(texto);
+    components.push({ component, content, index: match.index });
   }
 
-  return { text, existComponent };
+  if (components.length === 0) {
+    app.sendToRender(texto);
+    return;
+  }
+
+  components.sort((a, b) => a.index - b.index);
+
+  components.forEach(({ component, content }) => {
+    console.log("Component type: " + component);
+
+    if (component === "navbar") {
+      navbar_component(content.split(", "));
+    } else {
+      app.sendToRender(content);
+    }
+  });
 }
 
 function navbar_component(text) {
