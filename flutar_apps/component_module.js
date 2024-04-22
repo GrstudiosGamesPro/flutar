@@ -45,21 +45,16 @@ function navbar_component(text) {
     const [label, url] = item.split("='");
     const cleanUrl = url.replace(/'$/, "");
     return `<li class='nav_li'">
-              <a style="text-decoration: none; color: white;" href="${cleanUrl}">${label}</a>
+              <a href="${cleanUrl}">${label}</a>
             </li>`;
   });
 
-  const navbarStyle = `
-    background-color: #11101d;
-    color: white;
-    padding: 10px;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-  `;
-
   const navbar = `
   <nav class='nav_manager'">
+  <div class='nav_logo'>
+    <h1>LOGO</h1>
+  </div>
+  
     ${navbarItems.join("")}
   </nav>
   `;
