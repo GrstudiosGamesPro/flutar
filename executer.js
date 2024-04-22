@@ -51,9 +51,26 @@ function execute(statements, environment = {}) {
         console.log("HTML:", environment["_returnValue"]);
       }
     } else if (statement.type === "sendToRenderStatement") {
-      components.verify_component(
-        evaluateExpression(environment["_returnValue"])
-      );
+      if (environment[statement.functionName]) {
+        const func = environment[statement.functionName];
+        // const args = statement.args.map((arg) => evaluateExpression(arg));
+
+        // func(...args);
+
+        if (environment["_returnValue"] !== undefined) {
+          components.verify_component(
+            evaluateExpression(environment["_returnValue"])
+          );
+
+          console.log(environment["_returnValue"]);
+        }
+      } else {
+        components.verify_component(
+          evaluateExpression(environment["_returnValue"])
+        );
+        console.log(environment["_returnValue"]);
+        //throw new Error(`Function "${statement.functionName}" is not defined.`);
+      }
     } else if (statement.type === "seeConsoleStatement") {
       console.log("Hello from console!");
     } else if (statement.type === "hiFlutar") {

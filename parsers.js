@@ -91,7 +91,6 @@ function parse(tokens) {
       consume("EQUALS");
       let value = expression();
 
-      // Verifica si el valor es una llamada de función
       if (tokens[current].type === "LPAREN") {
         consume("LPAREN");
         const args = [];
@@ -107,7 +106,6 @@ function parse(tokens) {
         consume("RPAREN");
         consume("SEMICOLON");
 
-        // Devuelve una estructura que representa una llamada de función
         return {
           type: "functionCallVariable",
           functionName: value,
@@ -115,7 +113,6 @@ function parse(tokens) {
           identifier,
         };
       } else {
-        // Si no es una llamada de función, es una simple asignación de variable
         consume("SEMICOLON");
         return { type: "variableDeclaration", identifier, value };
       }
@@ -130,9 +127,34 @@ function parse(tokens) {
       consume("SENDTORENDER");
       consume("LPAREN");
       const value = expression();
-      consume("RPAREN");
-      consume("SEMICOLON");
-      return { type: "sendToRenderStatement", value };
+
+      if (tokens[current].type === "LPAREN") {
+        console.log("INICIANDO CONSUMO DE UNA FUNCION");
+        consume("LPAREN");
+        const args = [];
+        while (tokens[current].type !== "RPAREN") {
+          const result = expression();
+          args.push(result);
+
+          if (tokens[current].type === "COMMA") {
+            consume("COMMA");
+          }
+        }
+
+        consume("RPAREN");
+        consume("RPAREN");
+        consume("SEMICOLON");
+
+        return {
+          type: "sendToRenderStatement",
+          functionName: value,
+          args,
+        };
+      } else {
+        consume("RPAREN");
+        consume("SEMICOLON");
+        return { type: "sendToRenderStatement", value };
+      }
     } else if (tokens[current].type === "CONSOLETEST") {
       consume("CONSOLETEST");
       consume("LPAREN");
@@ -164,7 +186,6 @@ function parse(tokens) {
         consume("RPAREN");
         consume("SEMICOLON");
 
-        // Devuelve una estructura que representa una llamada de función
         return { type: "functionCallVariable", functionName: value, args };
       }
 

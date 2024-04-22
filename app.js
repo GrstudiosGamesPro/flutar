@@ -1,28 +1,36 @@
-const start_flutar = require('./main.js')
-const express = require('express');
-const bodyParser = require('body-parser');
+const start_flutar = require("./main.js");
+const express = require("express");
+const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
 
 // Parsea las solicitudes con formato JSON
 app.use(bodyParser.json());
 
-let additionalHtml = '';
+let additionalHtml = "";
 
-app.post('/add', (req, res) => {
+app.post("/add", (req, res) => {
   const { html } = req.body;
   additionalHtml += html;
-  res.send('HTML agregado correctamente');
+  //res.send("HTML agregado correctamente");
 });
 
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
+  const cssadd = `
+    <link rel="stylesheet" type="text/css" href="/style.css">
+  `;
+
   const html = `
+  <head>
+    ${cssadd}
+  </head>
     <html>
       <body>
         ${additionalHtml}
       </body>
     </html>
   `;
+
   res.send(html);
 });
 
@@ -37,7 +45,6 @@ app.use((req, res, next) => {
     </div>
   `);
 });
-
 
 app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);

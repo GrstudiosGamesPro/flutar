@@ -7,40 +7,40 @@ function obtenerURL(texto) {
 }
 
 function verify_component(texto) {
-  const regex = /<(\w+)>(.*?)<\/\1>/g;
+  const regex = /<(\w+)>(.*?)<\/\1>|<(\w+)>([^<]*)/g;
   let match;
-  const components = [];
+  let lastIndex = 0;
 
   while ((match = regex.exec(texto)) !== null) {
-    const component = match[1];
-    const content = match[2];
+    const component = match[1] || match[3];
+    const content = match[2] || match[4];
+    const index = match.index;
 
-    components.push({ component, content, index: match.index });
-  }
-
-  if (components.length === 0) {
-    app.sendToRender(texto);
-    return;
-  }
-
-  components.sort((a, b) => a.index - b.index);
-
-  components.forEach(({ component, content }) => {
-    console.log("Component type: " + component);
+    if (index > lastIndex) {
+      app.sendToRender(texto.slice(lastIndex, index));
+    }
 
     if (component === "navbar") {
-      navbar_component(content.split(", "));
+      const cleanedContent = content.replace(/^"/, "").replace(/"$/, "");
+      navbar_component(cleanedContent.split(", "));
     } else {
       app.sendToRender(content);
     }
-  });
+
+    lastIndex = index + match[0].length;
+  }
+
+  if (lastIndex < texto.length) {
+    app.sendToRender(texto.slice(lastIndex));
+  }
 }
 
 function navbar_component(text) {
   const navbarItems = text.map((item) => {
     const [label, url] = item.split("='");
-    return `<li style="display: inline; margin-right: 20px;">
-              <a style="text-decoration: none; color: white;" href="${url.trim()}">${label.trim()}</a>
+    const cleanUrl = url.replace(/'$/, "");
+    return `<li class='nav_li'">
+              <a style="text-decoration: none; color: white;" href="${cleanUrl}">${label}</a>
             </li>`;
   });
 
