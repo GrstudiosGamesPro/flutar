@@ -22,9 +22,14 @@ function verify_component(texto) {
 
     if (component === "navbar") {
       const cleanedContent = content.replace(/^"/, "").replace(/"$/, "");
-      navbar_component(cleanedContent.split(", "));
+
+      setTimeout(() => {
+        navbar_component(cleanedContent.split(", "));
+      }, 0.1);
     } else {
-      app.sendToRender(content);
+      setTimeout(() => {
+        app.sendToRender(content);
+      }, 0.1);
     }
 
     lastIndex = index + match[0].length;
@@ -54,7 +59,7 @@ function navbar_component(text) {
   `;
 
   const navbar = `
-  <nav style="${navbarStyle}">
+  <nav class='nav_manager'">
     ${navbarItems.join("")}
   </nav>
   `;

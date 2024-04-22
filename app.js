@@ -15,9 +15,11 @@ app.post("/add", (req, res) => {
   //res.send("HTML agregado correctamente");
 });
 
+app.use(express.static(__dirname + "/public"));
+
 app.get("/", (req, res) => {
   const cssadd = `
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/GrstudiosGamesPro/flutar@main/assets/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
   `;
 
   const html = `
