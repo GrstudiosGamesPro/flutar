@@ -12,9 +12,11 @@ const tokens = [
 
   //FLUTAR DEBUG
   { name: "HIFLUTAR", regex: /hi_flutar/ },
+  { name: "SETHOMEURL", regex: /set_home_url =>/ },
 
   { name: "NUMBER", regex: /-?\d+(\.\d+)?|\.\d+/ },
   { name: "STRING", regex: /"(.*?)"/ },
+  { name: "CONCATENATE", regex: /\+/ },
   { name: "VAR", regex: /lex/ },
   { name: "PRINT", regex: /log/ },
   { name: "SENDTORENDER", regex: /send_to_render =>/ },

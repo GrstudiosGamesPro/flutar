@@ -108,4 +108,40 @@ function register_page(pagename) {
   req.end();
 }
 
-module.exports = { hi_flutar, sendToRender, register_page };
+function set_url(irl) {
+  const newur = irl;
+
+  const data = JSON.stringify({ irl: newur });
+
+  const options = {
+    hostname: "localhost",
+    port: 3000,
+    path: "/setstarturl",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Length": data.length,
+    },
+  };
+
+  const req = http.request(options, (res) => {
+    let responseData = "";
+
+    res.on("data", (chunk) => {
+      responseData += chunk;
+    });
+
+    res.on("end", () => {
+      console.log("Respuesta del servidor:", responseData);
+    });
+  });
+
+  req.on("error", (e) => {
+    console.error(`Error en la solicitud: ${e.message}`);
+  });
+
+  req.write(data);
+  req.end();
+}
+
+module.exports = { hi_flutar, sendToRender, register_page, set_url };

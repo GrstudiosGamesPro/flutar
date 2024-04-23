@@ -25,10 +25,17 @@ function execute(statements, environment = {}) {
 
     if (statement.type === "variableDeclaration") {
       environment[statement.identifier] = evaluateExpression(statement.value);
+    } else if (statement.type === "sethomeURL") {
+      const value = evaluateExpression(statement.value);
+      app.set_url(value);
+      console.log("DATA: " + value);
     } else if (statement.type === "functionCallVariable") {
       if (environment[statement.functionName]) {
         const func = environment[statement.functionName];
         const args = statement.args.map((arg) => evaluateExpression(arg));
+        const functions = statement.functions.map((arg) =>
+          evaluateExpression(arg)
+        );
 
         func(...args);
 

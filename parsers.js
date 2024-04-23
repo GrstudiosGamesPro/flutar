@@ -89,7 +89,8 @@ function parse(tokens) {
       consume("IDENTIFIER");
 
       consume("EQUALS");
-      let value = expression();
+      let func1 = expression();
+      let functions = [];
 
       if (tokens[current].type === "LPAREN") {
         consume("LPAREN");
@@ -104,13 +105,32 @@ function parse(tokens) {
         }
 
         consume("RPAREN");
+
+        while (tokens[current].type === "CONCATENATE") {
+          consume("CONCATENATE");
+
+          let func2 = expression();
+          functions.push(func2);
+
+          consume("LPAREN");
+          while (tokens[current].type !== "RPAREN") {
+            const result = expression();
+            args.push(result);
+
+            if (tokens[current].type === "COMMA") {
+              consume("COMMA");
+            }
+          }
+          consume("RPAREN");
+        }
         consume("SEMICOLON");
 
         return {
           type: "functionCallVariable",
-          functionName: value,
+          functionName: func1,
           args,
           identifier,
+          functions,
         };
       } else {
         consume("SEMICOLON");
@@ -123,6 +143,11 @@ function parse(tokens) {
       consume("RPAREN");
       consume("SEMICOLON");
       return { type: "printStatement", value };
+    } else if (tokens[current].type === "SETHOMEURL") {
+      consume("SETHOMEURL");
+      const value = expression();
+      consume("SEMICOLON");
+      return { type: "sethomeURL", value };
     } else if (tokens[current].type === "SENDTORENDER") {
       consume("SENDTORENDER");
       const value = expression();
@@ -153,6 +178,7 @@ function parse(tokens) {
         return { type: "sendToRenderStatement", value };
       }
     } else if (tokens[current].type === "REGISTERWINDOW") {
+      let functions = [];
       consume("REGISTERWINDOW");
       const value = expression();
 
@@ -172,6 +198,25 @@ function parse(tokens) {
         }
 
         consume("RPAREN");
+
+        while (tokens[current].type === "CONCATENATE") {
+          consume("CONCATENATE");
+
+          let func2 = expression();
+          functions.push(func2);
+
+          consume("LPAREN");
+          while (tokens[current].type !== "RPAREN") {
+            const result = expression();
+            args.push(result);
+
+            if (tokens[current].type === "COMMA") {
+              consume("COMMA");
+            }
+          }
+          consume("RPAREN");
+        }
+
         consume("SEMICOLON");
 
         return {

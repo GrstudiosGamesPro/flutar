@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const app = express();
 const port = 3000;
+var url = "home";
 
 // Parsea las solicitudes con formato JSON
 app.use(bodyParser.json());
@@ -19,6 +20,11 @@ app.post("/add", (req, res) => {
   } else {
     res.status(404).send("Page not found");
   }
+});
+
+app.post("/setstarturl", (req, res) => {
+  const { irl } = req.body;
+  url = irl;
 });
 
 app.post("/register_new_page", (req, res) => {
@@ -357,6 +363,10 @@ app.get("/:page", (req, res) => {
 });
 
 app.use(express.static(__dirname + "/public"));
+
+app.get("/", (req, res) => {
+  res.redirect("/" + url);
+});
 
 // app.get("/", (req, res) => {
 //   const cssadd = `
