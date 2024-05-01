@@ -1,22 +1,11 @@
-fun hola (){
-    return <navbar>"HOME=#, CONTACT=contact" </navbar> <h1>HOLA<h3>bye</h3></h1>;
+fun nav (){
+    return <navbar>"HOME=#, CONTACT=contact" </navbar>;
 }
 
-fun hello (){
-    return <h3>PRUEBA DE CONCATENACION (5-52-352-32-53-53-2-235-53 435+54+35+43+453+543)</h3>;
+fun counter (){
+    return <counter auto="increment">"25"</counter>;
 }
 
-fun a1 (){
-    return <h3>PRUEBA DE CONCATENACION 1</h3>;
-}
 
-fun a2 (){
-    return <h3>PRUEBA DE CONCATENACION 2</h3>;
-}
-
-fun a3 (){
-    return <h3>PRUEBA DE CONCATENACION 3</h3>;
-}
-
-register_this => "home" :: hola() + hello() + hi() + a1() + a2() + a3();
+register_this => "home" :: nav(), counter();
 set_home_url => "home";

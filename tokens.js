@@ -16,7 +16,7 @@ const tokens = [
 
   { name: "NUMBER", regex: /-?\d+(\.\d+)?|\.\d+/ },
   { name: "STRING", regex: /"(.*?)"/ },
-  { name: "CONCATENATE", regex: /\+/ },
+  { name: "CONCATENATE", regex: /\,/ },
   { name: "VAR", regex: /lex/ },
   { name: "PRINT", regex: /log/ },
   { name: "SENDTORENDER", regex: /send_to_render =>/ },

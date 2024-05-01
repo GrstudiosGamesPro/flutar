@@ -202,7 +202,7 @@ function parse(tokens) {
         while (tokens[current].type === "CONCATENATE") {
           consume("CONCATENATE");
 
-          let func2 = expression();
+          const func2 = expression();
           functions.push(func2);
 
           consume("LPAREN");
@@ -224,6 +224,7 @@ function parse(tokens) {
           functionName: functionValue,
           name: value,
           args,
+          functions,
         };
       }
       consume("SEMICOLON");
@@ -326,6 +327,7 @@ function parse(tokens) {
           consume("COMMA");
         }
       }
+
       consume("RPAREN");
       consume("LBRACE");
 

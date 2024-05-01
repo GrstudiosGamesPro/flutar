@@ -44,6 +44,8 @@ function execute(statements, environment = {}) {
             environment["_returnValue"]
           );
         }
+
+        console.log(evaluateExpression(environment["_returnValue"]));
       } else {
         throw new Error(`Function "${statement.functionName}" is not defined.`);
       }
@@ -56,9 +58,34 @@ function execute(statements, environment = {}) {
       }
     } else if (statement.type === "registerPage") {
       const value = evaluateExpression(statement.name);
+
       if (typeof value === "string") {
         const func = environment[statement.functionName];
         const args = statement.args.map((arg) => evaluateExpression(arg));
+
+        let mainResult = "";
+
+        if (Array.isArray(statement.functions)) {
+          statement.functions.forEach((concatenatedFunc) => {
+            const funcName = concatenatedFunc;
+            if (
+              environment.hasOwnProperty(funcName) &&
+              typeof environment[funcName] === "function"
+            ) {
+              const concatenatedResult = environment[funcName]();
+
+              if (environment["_returnValue"] !== undefined) {
+                mainResult += evaluateExpression(environment["_returnValue"]);
+              }
+            } else {
+              console.error(
+                `Function ${funcName} is not defined in the environment.`
+              );
+            }
+          });
+        }
+
+        console.log("MAIN RESULT: " + JSON.stringify(mainResult));
 
         func(...args);
 
@@ -72,8 +99,10 @@ function execute(statements, environment = {}) {
 
         components.verify_component(
           value,
-          evaluateExpression(environment["_returnValue"])
+          evaluateExpression(environment["_returnValue"]) + mainResult
         );
+
+        console.log(value);
       } else {
         console.log("HTML:", environment["_returnValue"]);
       }
@@ -99,7 +128,6 @@ function execute(statements, environment = {}) {
       //     //throw new Error(`Function "${statement.functionName}" is not defined.`);
       //   }
       // } else if (statement.type === "seeConsoleStatement") {
-      console.log("Hello from console!");
     } else if (statement.type === "hiFlutar") {
       app.hi_flutar();
     } else if (statement.type === "renderStatement") {

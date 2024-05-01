@@ -1,39 +1,82 @@
-*{
+* {
   margin: 0;
   padding: 0;
 
   font-family: monospace;
 }
 
-.nav_manager{
+.nav_manager {
   display: flex;
   margin: 0 auto;
   width: 100%;
   height: 60px;
 
-  background-color: #FFF5E0;
+  background-color: #fff5e0;
   justify-content: center;
   justify-items: center;
   align-items: center;
   gap: 10px;
 }
 
-.nav_logo{
+.nav_logo {
   display: flex;
   width: 100%;
   left: 0;
   margin-left: 10px;
 }
 
-.nav_li{
+.nav_li {
   text-decoration: none;
   list-style-type: none;
   margin-right: 20px;
 }
 
-.nav_li a{
-  color: #141E46;
+.nav_li a {
+  color: #141e46;
   text-decoration: none;
   font-weight: bolder;
   font-size: 15px;
+}
+
+.counter-container {
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 0 auto;
+  justify-content: center;
+}
+
+.counter-value {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.counter-button {
+  font-size: 18px;
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.increment-button {
+  background-color: #4caf50;
+  color: white;
+}
+
+.decrement-button {
+  background-color: #f44336;
+  color: white;
+}
+
+.counter-button:hover {
+  background-color: #e0e0e0;
 }

@@ -1,0 +1,6 @@
+fun hola (){
+    return <navbar>"Hola=#, Contact=contact"</navbar> <h3>(5 * 2 - 3 / 12)</h3>;
+}
+
+register_this => "index" :: hola();
+set_home_url => "index";
